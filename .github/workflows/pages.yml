@@ -7,6 +7,9 @@ on:
       - "website/**"
       - "release-assets.json"
       - "scripts/build-website.mjs"
+      - "scripts/website-plugins.mjs"
+      - "plugins/catalog.json"
+      - "plugins/*/plugin.json"
       - "package.json"
       - ".github/workflows/pages.yml"
   pull_request:
@@ -14,6 +17,9 @@ on:
       - "website/**"
       - "release-assets.json"
       - "scripts/build-website.mjs"
+      - "scripts/website-plugins.mjs"
+      - "plugins/catalog.json"
+      - "plugins/*/plugin.json"
       - "package.json"
       - ".github/workflows/pages.yml"
   workflow_dispatch:

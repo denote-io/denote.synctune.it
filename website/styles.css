@@ -349,8 +349,7 @@ h1 {
   line-height: 1.7;
 }
 
-.workflow-list,
-.plugin-ledger {
+.workflow-list {
   border-top: 1px solid var(--line);
 }
 
@@ -369,7 +368,6 @@ h1 {
 }
 
 .workflow-list h3,
-.plugin-ledger h3,
 .download-grid h3 {
   margin: 0;
   font-size: 20px;
@@ -384,30 +382,62 @@ h1 {
   line-height: 1.65;
 }
 
-.plugin-ledger article {
-  grid-template-columns: 44px minmax(0, 1fr) auto;
-  align-items: start;
+.plugin-group + .plugin-group {
+  margin-top: 44px;
 }
 
-.plugin-ledger__icon {
-  display: grid;
-  width: 38px;
-  height: 38px;
-  place-items: center;
-  color: var(--moss-strong);
-  background: var(--raised);
-  border: 1px solid var(--line);
-  border-radius: 12px 5px 12px 5px;
-}
-
-.plugin-ledger article > span:last-child {
-  padding: 4px 7px;
-  color: var(--moss-strong);
-  border: 1px solid color-mix(in srgb, var(--moss) 52%, var(--line));
-  border-radius: 999px;
-  font-size: 10px;
-  font-weight: 750;
+.plugin-group h3 {
+  margin: 0;
+  padding-bottom: 12px;
+  color: var(--quiet);
+  border-bottom: 1px solid var(--line);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.plugin-ledger article {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  padding: 20px 0;
+}
+
+.plugin-ledger h4 {
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+}
+
+.plugin-ledger h4 a {
+  color: var(--ink);
+  text-decoration-color: var(--line);
+  text-underline-offset: 4px;
+}
+
+.plugin-ledger h4 a:hover {
+  color: var(--moss-strong);
+  text-decoration-color: currentColor;
+}
+
+.plugin-ledger p {
+  margin-top: 6px;
+}
+
+.plugin-ledger__version {
+  padding: 3px 7px;
+  color: var(--quiet);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font: 11px/1.4 SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  white-space: nowrap;
+}
+
+@media (min-width: 981px) {
+  .plugins .section__heading {
+    position: sticky;
+    top: 96px;
+  }
 }
 
 .downloads {
@@ -607,17 +637,13 @@ h1 {
     margin-inline: -10px;
   }
 
-  .workflow-list article {
+  .workflow-list article,
+  .plugin-ledger article {
     grid-template-columns: 1fr;
     gap: 8px;
   }
 
-  .plugin-ledger article {
-    grid-template-columns: 40px minmax(0, 1fr);
-  }
-
-  .plugin-ledger article > span:last-child {
-    grid-column: 2;
+  .plugin-ledger__version {
     width: fit-content;
   }
 
