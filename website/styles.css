@@ -398,7 +398,7 @@ h1 {
 }
 
 .plugin-ledger article {
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
   align-items: start;
   padding: 20px 0;
 }
@@ -422,6 +422,23 @@ h1 {
 
 .plugin-ledger p {
   margin-top: 6px;
+}
+
+.plugin-ledger__icon {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  color: var(--moss-strong);
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: 12px 5px 12px 5px;
+}
+
+.plugin-ledger__icon svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.8;
 }
 
 .plugin-ledger__version {
@@ -637,13 +654,17 @@ h1 {
     margin-inline: -10px;
   }
 
-  .workflow-list article,
-  .plugin-ledger article {
+  .workflow-list article {
     grid-template-columns: 1fr;
     gap: 8px;
   }
 
+  .plugin-ledger article {
+    grid-template-columns: 40px minmax(0, 1fr);
+  }
+
   .plugin-ledger__version {
+    grid-column: 2;
     width: fit-content;
   }
 

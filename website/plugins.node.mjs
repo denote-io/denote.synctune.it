@@ -7,6 +7,7 @@ import {
   renderPluginLedger,
 } from "../scripts/website-plugins.mjs";
 
+const icon = '<svg viewBox="0 0 24 24"><path d="M4 12h16" /></svg>';
 const directories = new Map([
   ["example.zeta", "zeta"],
   ["example.alpha", "alpha"],
@@ -62,23 +63,47 @@ describe("website plugin ledger", () => {
     );
   });
 
-  it("escapes catalog text and links each plugin to its guide", () => {
+  it("escapes catalog text, inlines the icon, and links each plugin to its guide", () => {
     const html = renderPluginLedger(
       groupWebsitePlugins(
         [entry("example.alpha", 'Alpha <b>"tool"</b>', "code", { description: "Use & <script>" })],
         directories,
       ),
+      new Map([["example.alpha", `<!-- synthetic -->\n${icon}\n`]]),
     );
 
     assert.match(html, /<h3 id="plugin-group-code">Code<\/h3>/);
     assert.match(html, /Alpha &lt;b&gt;&quot;tool&quot;&lt;\/b&gt;/);
     assert.match(html, /<p>Use &amp; &lt;script&gt;<\/p>/);
+    assert.ok(
+      html.includes(`<span class="plugin-ledger__icon" aria-hidden="true"><!-- synthetic -->\n${icon}</span>`),
+    );
     assert.match(
       html,
       /href="https:\/\/github\.com\/mbianchidev\/denote\/blob\/main\/plugins\/alpha\/guide\.md"/,
     );
     assert.match(html, /v1\.2\.3/);
     assert.doesNotMatch(html, /<script>|<b>/);
+  });
+
+  it("requires a static SVG icon for every listed plugin", () => {
+    const groups = groupWebsitePlugins([entry("example.alpha", "Alpha", "code")], directories);
+
+    assert.throws(
+      () => renderPluginLedger(groups, new Map()),
+      /example\.alpha has no website icon at website\/assets\/plugins\/example\.alpha\.svg/,
+    );
+    for (const unsafe of [
+      '<svg onload="alert(1)"></svg>',
+      "<svg><script>alert(1)</script></svg>",
+      '<svg><use href="#shape" /></svg>',
+      "<div></div>",
+    ]) {
+      assert.throws(
+        () => renderPluginLedger(groups, new Map([["example.alpha", unsafe]])),
+        /example\.alpha has an unsafe website icon/,
+      );
+    }
   });
 
   it("requires exactly one marker in the page", () => {

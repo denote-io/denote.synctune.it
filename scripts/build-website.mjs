@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import {
   groupWebsitePlugins,
   insertPluginLedger,
+  pluginIconPath,
   renderPluginLedger,
 } from "./website-plugins.mjs";
 
@@ -17,10 +18,15 @@ const groups = groupWebsitePlugins(
   readJson(resolve(pluginsRoot, "catalog.json")),
   readPluginPackageDirectories(pluginsRoot),
 );
+const icons = new Map();
+for (const plugin of groups.flatMap((group) => group.plugins)) {
+  const iconPath = resolve("website", pluginIconPath(plugin));
+  if (existsSync(iconPath)) icons.set(plugin.id, readFileSync(iconPath, "utf8"));
+}
 const indexPath = resolve(destination, "index.html");
 writeFileSync(
   indexPath,
-  insertPluginLedger(readFileSync(indexPath, "utf8"), renderPluginLedger(groups)),
+  insertPluginLedger(readFileSync(indexPath, "utf8"), renderPluginLedger(groups, icons)),
 );
 
 const pluginCount = groups.reduce((total, group) => total + group.plugins.length, 0);

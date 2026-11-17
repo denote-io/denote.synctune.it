@@ -55,11 +55,17 @@ export function groupWebsitePlugins(catalog, packageDirectories) {
     }));
 }
 
-export function renderPluginLedger(groups) {
+export function pluginIconPath(plugin) {
+  return `assets/plugins/${plugin.id}.svg`;
+}
+
+export function renderPluginLedger(groups, icons) {
   return groups
     .map((group) => {
       const headingId = `plugin-group-${group.id}`;
-      const articles = group.plugins.map(renderPlugin).join("\n");
+      const articles = group.plugins
+        .map((plugin) => renderPlugin(plugin, requireSafeIcon(icons.get(plugin.id), plugin.id)))
+        .join("\n");
       return [
         `<section class="plugin-group" aria-labelledby="${escapeHtml(headingId)}">`,
         `<h3 id="${escapeHtml(headingId)}">${escapeHtml(group.label)}</h3>`,
@@ -80,10 +86,11 @@ export function insertPluginLedger(html, ledger) {
   return parts.join(ledger);
 }
 
-function renderPlugin(plugin) {
+function renderPlugin(plugin, icon) {
   const guide = `${REPOSITORY_URL}/blob/main/plugins/${encodePath(plugin.directory)}/${encodePath(plugin.documentation)}`;
   return [
     "<article>",
+    `<span class="plugin-ledger__icon" aria-hidden="true">${icon}</span>`,
     "<div>",
     `<h4><a href="${escapeHtml(guide)}">${escapeHtml(plugin.name)}</a></h4>`,
     `<p>${escapeHtml(plugin.description)}</p>`,
@@ -91,6 +98,21 @@ function renderPlugin(plugin) {
     `<span class="plugin-ledger__version">v${escapeHtml(plugin.version)}</span>`,
     "</article>",
   ].join("\n");
+}
+
+// Icons are inlined so they follow the theme color; allow only static SVG shapes.
+function requireSafeIcon(markup, id) {
+  if (typeof markup !== "string") {
+    throw new Error(`Plugin ${id} has no website icon at website/${pluginIconPath({ id })}.`);
+  }
+  const icon = markup.trim();
+  if (
+    !/^(?:<!--[^]*?-->\s*)?<svg\b[^]*<\/svg>$/.test(icon) ||
+    /<(?:script|style|foreignObject|image|use|a)\b|\son[a-z]+\s*=|href\s*=|url\(/i.test(icon)
+  ) {
+    throw new Error(`Plugin ${id} has an unsafe website icon.`);
+  }
+  return icon;
 }
 
 function requireText(value, label) {
