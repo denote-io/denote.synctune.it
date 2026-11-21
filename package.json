@@ -1,0 +1,13 @@
+{
+  "name": "denote-website",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+  },
+  "scripts": {
+    "fetch:denote": "node scripts/fetch-denote.mjs",
+    "build": "node scripts/build-website.mjs",
+    "test": "node --test website/*.node.mjs"
+  }
+}
