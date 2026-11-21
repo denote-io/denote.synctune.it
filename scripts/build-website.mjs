@@ -1,4 +1,4 @@
-import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import {
   groupWebsitePlugins,
@@ -13,11 +13,7 @@ mkdirSync(destination, { recursive: true });
 cpSync(resolve("website"), destination, { recursive: true });
 cpSync(resolve("release-assets.json"), resolve(destination, "release-assets.json"));
 
-const pluginsRoot = resolve("plugins");
-const groups = groupWebsitePlugins(
-  readJson(resolve(pluginsRoot, "catalog.json")),
-  readPluginPackageDirectories(pluginsRoot),
-);
+const groups = groupWebsitePlugins(readJson(resolve("plugins/catalog.json")));
 const icons = new Map();
 for (const plugin of groups.flatMap((group) => group.plugins)) {
   const iconPath = resolve("website", pluginIconPath(plugin));
@@ -31,20 +27,6 @@ writeFileSync(
 
 const pluginCount = groups.reduce((total, group) => total + group.plugins.length, 0);
 console.log(`Built static website with ${pluginCount} plugins at ${destination}`);
-
-function readPluginPackageDirectories(root) {
-  const directories = new Map();
-  for (const entry of readdirSync(root, { withFileTypes: true })) {
-    const manifestPath = resolve(root, entry.name, "plugin.json");
-    if (!entry.isDirectory() || !existsSync(manifestPath)) continue;
-    const { id } = readJson(manifestPath);
-    if (directories.has(id)) {
-      throw new Error(`Plugin ${id} is declared by both ${directories.get(id)} and ${entry.name}.`);
-    }
-    directories.set(id, entry.name);
-  }
-  return directories;
-}
 
 function readJson(path) {
   try {

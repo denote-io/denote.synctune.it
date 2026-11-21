@@ -1,6 +1,10 @@
 export const PLUGIN_LEDGER_MARKER = "<!-- plugin-catalog -->";
 
-const REPOSITORY_URL = "https://github.com/mbianchidev/denote";
+// Mirrors pluginRepository() in plugin-downloads.mjs, which needs installed
+// dependencies that the Pages workflow does not install.
+const PLUGIN_ORGANIZATION = "denote-io";
+const TRUSTED_PLUGIN_ID = /^denote\.([a-z0-9]+(?:-[a-z0-9]+)*)$/;
+const SEMANTIC_VERSION = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/;
 // The Reference plugin is an SDK lifecycle fixture, not a user workflow.
 const EXCLUDED_PLUGIN_IDS = new Set(["denote.reference"]);
 // Order and labels match Settings → Plugins.
@@ -16,7 +20,7 @@ const CATEGORY_LABELS = new Map([
   ["other", "Other"],
 ]);
 
-export function groupWebsitePlugins(catalog, packageDirectories) {
+export function groupWebsitePlugins(catalog) {
   if (!Array.isArray(catalog)) {
     throw new TypeError("The plugin catalog must be an array.");
   }
@@ -34,15 +38,17 @@ export function groupWebsitePlugins(catalog, packageDirectories) {
     if (!group) {
       throw new Error(`Plugin ${id} uses unknown category ${String(manifest.category)}.`);
     }
-    const directory = packageDirectories.get(id);
-    if (!directory) throw new Error(`No plugin package directory declares ${id}.`);
+    const repository = pluginRepository(id);
+    const version = requireVersion(manifest.version, id);
+    const documentation = requirePackagePath(manifest.documentation, `${id} guide`);
     group.plugins.push({
       id,
-      directory,
       name: requireText(manifest.name, `${id} name`),
       description: requireText(manifest.description, `${id} description`),
-      version: requireText(manifest.version, `${id} version`),
-      documentation: requirePackagePath(manifest.documentation, `${id} guide`),
+      version,
+      repository,
+      repositoryUrl: `https://github.com/${repository}`,
+      guideUrl: `https://github.com/${repository}/blob/${encodeURIComponent(`v${version}`)}/${encodePath(documentation)}`,
     });
   }
   return [...groups.values()]
@@ -87,13 +93,13 @@ export function insertPluginLedger(html, ledger) {
 }
 
 function renderPlugin(plugin, icon) {
-  const guide = `${REPOSITORY_URL}/blob/main/plugins/${encodePath(plugin.directory)}/${encodePath(plugin.documentation)}`;
   return [
     "<article>",
     `<span class="plugin-ledger__icon" aria-hidden="true">${icon}</span>`,
     "<div>",
-    `<h4><a href="${escapeHtml(guide)}">${escapeHtml(plugin.name)}</a></h4>`,
+    `<h4><a href="${escapeHtml(plugin.guideUrl)}">${escapeHtml(plugin.name)}</a></h4>`,
     `<p>${escapeHtml(plugin.description)}</p>`,
+    `<a class="plugin-ledger__repository" href="${escapeHtml(plugin.repositoryUrl)}">${escapeHtml(plugin.repository)}</a>`,
     "</div>",
     `<span class="plugin-ledger__version">v${escapeHtml(plugin.version)}</span>`,
     "</article>",
@@ -120,6 +126,20 @@ function requireText(value, label) {
     throw new Error(`The plugin catalog has a missing ${label}.`);
   }
   return value.trim();
+}
+
+function pluginRepository(id) {
+  const name = TRUSTED_PLUGIN_ID.exec(id)?.[1];
+  if (!name) throw new Error(`Plugin ${id} is not a trusted denote.<name> plugin ID.`);
+  return `${PLUGIN_ORGANIZATION}/denote-${name}`;
+}
+
+function requireVersion(value, id) {
+  const version = requireText(value, `${id} version`);
+  if (!SEMANTIC_VERSION.test(version)) {
+    throw new Error(`Plugin ${id} has an invalid version: ${version}.`);
+  }
+  return version;
 }
 
 function requirePackagePath(value, label) {

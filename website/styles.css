@@ -424,6 +424,21 @@ h1 {
   margin-top: 6px;
 }
 
+.plugin-ledger__repository {
+  display: inline-block;
+  margin-top: 6px;
+  color: var(--muted);
+  font: 12px/1.5 SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  overflow-wrap: anywhere;
+  text-decoration-color: var(--line);
+  text-underline-offset: 3px;
+}
+
+.plugin-ledger__repository:hover {
+  color: var(--moss-strong);
+  text-decoration-color: currentColor;
+}
+
 .plugin-ledger__icon {
   display: grid;
   width: 38px;
