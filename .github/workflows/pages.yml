@@ -3,23 +3,10 @@ name: Pages
 on:
   push:
     branches: [main]
-    paths:
-      - "website/**"
-      - "release-assets.json"
-      - "scripts/build-website.mjs"
-      - "scripts/website-plugins.mjs"
-      - "plugins/catalog.json"
-      - "package.json"
-      - ".github/workflows/pages.yml"
   pull_request:
-    paths:
-      - "website/**"
-      - "release-assets.json"
-      - "scripts/build-website.mjs"
-      - "scripts/website-plugins.mjs"
-      - "plugins/catalog.json"
-      - "package.json"
-      - ".github/workflows/pages.yml"
+  # Picks up plugin catalog and release contract changes in Denote.
+  schedule:
+    - cron: "17 5 * * *"
   workflow_dispatch:
 
 concurrency:
@@ -45,10 +32,13 @@ jobs:
           node-version-file: .node-version
 
       - name: Test website release and theme logic
-        run: npm run test:website
+        run: npm test
+
+      - name: Fetch the Denote plugin catalog and release contract
+        run: npm run fetch:denote
 
       - name: Build static website
-        run: npm run build:website
+        run: npm run build
 
       - name: Configure Pages
         if: github.event_name != 'pull_request'

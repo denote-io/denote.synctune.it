@@ -7,13 +7,15 @@ import {
   renderPluginLedger,
 } from "./website-plugins.mjs";
 
+// The plugin catalog and release download contract come from a Denote checkout.
+const denote = resolve(process.env.DENOTE_SOURCE ?? ".denote");
 const destination = resolve("dist/website");
 rmSync(destination, { recursive: true, force: true });
 mkdirSync(destination, { recursive: true });
 cpSync(resolve("website"), destination, { recursive: true });
-cpSync(resolve("release-assets.json"), resolve(destination, "release-assets.json"));
+cpSync(resolve(denote, "release-assets.json"), resolve(destination, "release-assets.json"));
 
-const groups = groupWebsitePlugins(readJson(resolve("plugins/catalog.json")));
+const groups = groupWebsitePlugins(readJson(resolve(denote, "plugins/catalog.json")));
 const icons = new Map();
 for (const plugin of groups.flatMap((group) => group.plugins)) {
   const iconPath = resolve("website", pluginIconPath(plugin));
