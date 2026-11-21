@@ -38,6 +38,48 @@ describe("website downloads", () => {
     );
   });
 
+  it("accepts assets from the repository before and after the denote-io transfer", () => {
+    for (const repository of ["mbianchidev/denote", "denote-io/denote"]) {
+      const result = resolveReleaseDownloads(
+        { ...contract, repository },
+        {
+          tag_name: "v1.2.3",
+          draft: false,
+          prerelease: false,
+          assets: [
+            asset("Denote_1.2.3_aarch64.dmg", "denote-io/denote"),
+            asset("Denote_1.2.3_x64-setup.exe", "mbianchidev/denote"),
+          ],
+        },
+      );
+      assert.equal(
+        result.downloads["macos-aarch64"].url,
+        "https://github.com/denote-io/denote/releases/download/v1.2.3/Denote_1.2.3_aarch64.dmg",
+      );
+    }
+    assert.throws(
+      () =>
+        resolveReleaseDownloads(
+          { ...contract, repository: "synthetic-owner/denote" },
+          { tag_name: "v1.2.3", draft: false, prerelease: false, assets: [] },
+        ),
+      /download contract is invalid/,
+    );
+    assert.throws(
+      () =>
+        resolveReleaseDownloads(contract, {
+          tag_name: "v1.2.3",
+          draft: false,
+          prerelease: false,
+          assets: [
+            asset("Denote_1.2.3_aarch64.dmg"),
+            asset("Denote_1.2.3_x64-setup.exe", "synthetic-owner/denote"),
+          ],
+        }),
+      /Windows is unavailable/,
+    );
+  });
+
   it("fails visibly when an expected artifact is absent or unofficial", () => {
     assert.throws(
       () =>
@@ -80,9 +122,9 @@ describe("website downloads", () => {
   });
 });
 
-function asset(name) {
+function asset(name, repository = "mbianchidev/denote") {
   return {
     name,
-    browser_download_url: `https://github.com/mbianchidev/denote/releases/download/v1.2.3/${name}`,
+    browser_download_url: `https://github.com/${repository}/releases/download/v1.2.3/${name}`,
   };
 }

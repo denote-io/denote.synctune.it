@@ -1,9 +1,11 @@
 const RELEASES_URL = "https://github.com/mbianchidev/denote/releases";
+// GitHub returns the new owner after the denote-io transfer; accept both paths.
+const OFFICIAL_REPOSITORIES = ["mbianchidev/denote", "denote-io/denote"];
 
 export function resolveReleaseDownloads(contract, release) {
   if (
     contract?.schemaVersion !== 1 ||
-    contract.repository !== "mbianchidev/denote" ||
+    !OFFICIAL_REPOSITORIES.includes(contract.repository) ||
     !Array.isArray(contract.downloads)
   ) {
     throw new Error("The download contract is invalid.");
@@ -67,11 +69,11 @@ function renderName(template, version) {
 function isOfficialAssetUrl(value, tag, name) {
   try {
     const url = new URL(value);
+    const assetPath = `releases/download/${tag}/${encodeURIComponent(name).replaceAll("%2F", "/")}`;
     return (
       url.protocol === "https:" &&
       url.hostname === "github.com" &&
-      url.pathname ===
-        `/mbianchidev/denote/releases/download/${tag}/${encodeURIComponent(name).replaceAll("%2F", "/")}` &&
+      OFFICIAL_REPOSITORIES.some((repository) => url.pathname === `/${repository}/${assetPath}`) &&
       !url.username &&
       !url.password &&
       !url.search &&
