@@ -1,7 +1,7 @@
 import { detectRecommendedDownload, resolveReleaseDownloads } from "./downloads.js";
 import { applyTheme, readThemePreference, SITE_THEME_KEY } from "./theme.js";
 
-const RELEASES_URL = "https://github.com/mbianchidev/denote/releases";
+const RELEASES_URL = "https://github.com/denote-io/denote/releases";
 let disposeTheme = applyTheme(readThemePreference());
 
 for (const button of document.querySelectorAll("[data-theme-choice]")) {
@@ -21,7 +21,7 @@ async function loadDownloads() {
   try {
     const [contractResponse, releaseResponse] = await Promise.all([
       fetch("./release-assets.json", { cache: "no-store" }),
-      fetch("https://api.github.com/repos/mbianchidev/denote/releases/latest", {
+      fetch("https://api.github.com/repos/denote-io/denote/releases/latest", {
         headers: { Accept: "application/vnd.github+json" },
       }),
     ]);

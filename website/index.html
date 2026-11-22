@@ -8,6 +8,18 @@
       content="Denote is a local-first Markdown workspace for macOS, Windows, and Linux."
     />
     <meta name="theme-color" content="#121315" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Denote | Your notes stay files" />
+    <meta
+      property="og:description"
+      content="A local-first Markdown workspace for macOS, Windows, and Linux. Open a folder and write."
+    />
+    <meta property="og:url" content="https://denote.synctune.it/" />
+    <meta property="og:image" content="https://denote.synctune.it/assets/social-card.png" />
+    <meta property="og:image:width" content="1280" />
+    <meta property="og:image:height" content="640" />
+    <meta property="og:image:alt" content="Denote's sage folded-page outline and D." />
+    <link rel="canonical" href="https://denote.synctune.it/" />
     <script>
       (() => {
         const stored = localStorage.getItem("denote-site-theme");
@@ -27,22 +39,25 @@
           ?.setAttribute("content", theme === "dark" ? "#121315" : "#e9e6df");
       })();
     </script>
-    <link rel="icon" href="./assets/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="./assets/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
     <link rel="stylesheet" href="./styles.css" />
-    <title>Denote — Your notes stay files</title>
+    <title>Denote | Your notes stay files</title>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to main content</a>
     <header class="site-header">
       <a class="brand" href="#top" aria-label="Denote home">
-        <span class="brand__mark" aria-hidden="true">D</span>
+        <img class="brand__mark brand__mark--dark" src="./assets/symbol-on-dark.svg" alt="" width="36" height="36" />
+        <img class="brand__mark brand__mark--light" src="./assets/symbol-on-light.svg" alt="" width="36" height="36" />
         <span>Denote</span>
       </a>
       <nav aria-label="Primary navigation">
         <a href="#workflows">Workflows</a>
         <a href="#plugins">Plugins</a>
         <a href="#download">Download</a>
-        <a href="https://github.com/mbianchidev/denote">GitHub</a>
+        <a href="https://github.com/denote-io/denote">GitHub</a>
       </nav>
       <fieldset class="theme-choice" aria-label="Appearance">
         <legend class="sr-only">Appearance</legend>
@@ -66,7 +81,7 @@
             <a class="button button--primary" href="#download">Download Denote</a>
             <a
               class="button button--secondary"
-              href="https://github.com/mbianchidev/denote/tree/main/docs/user-guide"
+              href="https://github.com/denote-io/denote/tree/main/docs/user-guide"
             >
               Read the guide
             </a>
@@ -174,7 +189,7 @@
             <span>macOS</span>
             <h3>Apple Silicon</h3>
             <p>M-series Macs · disk image</p>
-            <a data-download-id="macos-aarch64" href="https://github.com/mbianchidev/denote/releases">
+            <a data-download-id="macos-aarch64" href="https://github.com/denote-io/denote/releases">
               View Releases
             </a>
           </article>
@@ -182,7 +197,7 @@
             <span>macOS</span>
             <h3>Intel</h3>
             <p>Intel Macs · disk image</p>
-            <a data-download-id="macos-x64" href="https://github.com/mbianchidev/denote/releases">
+            <a data-download-id="macos-x64" href="https://github.com/denote-io/denote/releases">
               View Releases
             </a>
           </article>
@@ -190,7 +205,7 @@
             <span>Windows</span>
             <h3>Windows x64</h3>
             <p>NSIS installer</p>
-            <a data-download-id="windows-x64" href="https://github.com/mbianchidev/denote/releases">
+            <a data-download-id="windows-x64" href="https://github.com/denote-io/denote/releases">
               View Releases
             </a>
           </article>
@@ -199,9 +214,9 @@
             <h3>Linux x64</h3>
             <p>AppImage, DEB, or RPM</p>
             <div class="linux-downloads">
-              <a data-download-id="linux-appimage-x64" href="https://github.com/mbianchidev/denote/releases">AppImage</a>
-              <a data-download-id="linux-deb-x64" href="https://github.com/mbianchidev/denote/releases">DEB</a>
-              <a data-download-id="linux-rpm-x64" href="https://github.com/mbianchidev/denote/releases">RPM</a>
+              <a data-download-id="linux-appimage-x64" href="https://github.com/denote-io/denote/releases">AppImage</a>
+              <a data-download-id="linux-deb-x64" href="https://github.com/denote-io/denote/releases">DEB</a>
+              <a data-download-id="linux-rpm-x64" href="https://github.com/denote-io/denote/releases">RPM</a>
             </div>
           </article>
         </div>
@@ -209,7 +224,7 @@
           <p>
             <strong>Current macOS releases are unsigned and not notarized.</strong>
             Only use this workaround for a trusted download from the
-            <a href="https://github.com/mbianchidev/denote/releases">official Denote releases</a>.
+            <a href="https://github.com/denote-io/denote/releases">official Denote releases</a>.
             Verify the disk image against that release's SHA-256 checksum in
             <code>SHA256SUMS</code> before continuing.
           </p>
@@ -234,12 +249,14 @@
     </main>
 
     <footer class="site-footer">
-      <span class="brand__mark" aria-hidden="true">D</span>
-      <p>Denote keeps the document — and your ownership of it — in view.</p>
+      <img class="brand__mark brand__mark--dark" src="./assets/symbol-on-dark.svg" alt="" width="36" height="36" />
+      <img class="brand__mark brand__mark--light" src="./assets/symbol-on-light.svg" alt="" width="36" height="36" />
+      <p>Denote keeps the document, and your ownership of it, in view.</p>
       <nav aria-label="Footer navigation">
-        <a href="https://github.com/mbianchidev/denote/releases">Releases</a>
-        <a href="https://github.com/mbianchidev/denote/tree/main/docs">Documentation</a>
-        <a href="https://github.com/mbianchidev/denote/issues/new?template=bug_report.md">Report a bug</a>
+        <a href="https://github.com/denote-io/denote/releases">Releases</a>
+        <a href="https://github.com/denote-io/denote/tree/main/docs">Documentation</a>
+        <a href="https://github.com/denote-io/denote/issues/new?template=bug_report.md">Report a bug</a>
+        <a href="https://synctune.it">A Synctune project</a>
       </nav>
     </footer>
     <script type="module" src="./site.js"></script>
