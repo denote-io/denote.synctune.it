@@ -1,6 +1,6 @@
 # denote.synctune.it
 
-The public website for [Denote](https://github.com/mbianchidev/denote), served at
+The public website for [Denote](https://github.com/denote-io/denote), served at
 [denote.synctune.it](https://denote.synctune.it). Part of Synctune. It is a
 dependency-free static site: no framework, no bundler, and no npm dependencies.
 
@@ -64,8 +64,17 @@ current version, grouped under the same category labels as Settings → Plugins.
 Icons are website-owned Lucide outlines in the moss accent, reusing the
 activity-rail icon where the app has one, because package icons are not a
 consistent visual set. Follow Denote's
-[design guide](https://github.com/mbianchidev/denote/blob/main/docs/design.md)
+[design guide](https://github.com/denote-io/denote/blob/main/docs/design.md)
 for shared interface conventions.
+
+## Brand assets
+
+The header and footer symbols, favicons, touch icon and social card come
+unmodified from the Denote kit in
+[synctune-io/branding](https://github.com/synctune-io/branding)
+(`brands/denote-io/`). `symbol-on-dark.svg` (sage) and `symbol-on-light.svg`
+(ink) switch with the site theme; keep them at 32px or larger, as the kit
+requires for the folded-page D.
 
 ## Deploy
 

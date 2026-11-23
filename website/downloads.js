@@ -1,4 +1,4 @@
-const RELEASES_URL = "https://github.com/mbianchidev/denote/releases";
+const RELEASES_URL = "https://github.com/denote-io/denote/releases";
 // GitHub returns the new owner after the denote-io transfer; accept both paths.
 const OFFICIAL_REPOSITORIES = ["mbianchidev/denote", "denote-io/denote"];
 

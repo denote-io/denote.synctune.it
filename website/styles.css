@@ -113,15 +113,20 @@ button:focus-visible {
   text-decoration: none;
 }
 
+/* Approved Denote symbol from the brand kit: sage on dark, ink on light. */
 .brand__mark {
-  display: inline-grid;
-  width: 34px;
-  height: 34px;
-  place-items: center;
-  color: var(--moss-contrast);
-  background: var(--moss);
-  border-radius: 12px 5px 12px 5px;
-  box-shadow: 0 8px 22px color-mix(in srgb, var(--app) 72%, transparent);
+  display: block;
+  width: 36px;
+  height: 36px;
+}
+
+.brand__mark--light,
+:root[data-theme="light"] .brand__mark--dark {
+  display: none;
+}
+
+:root[data-theme="light"] .brand__mark--light {
+  display: block;
 }
 
 .site-header nav,
@@ -709,7 +714,6 @@ h1 {
 }
 
 @media (forced-colors: active) {
-  .brand__mark,
   .theme-choice button[aria-pressed="true"],
   .button--primary,
   .download-grid a {
